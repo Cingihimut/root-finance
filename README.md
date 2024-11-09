@@ -68,4 +68,4 @@ Clone the repository and install dependencies:
 ```bash
 git clone https://github.com/yourusername/root-finance.git
 cd root-finance
-npm install
+npm install & foundry install
