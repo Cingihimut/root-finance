@@ -3,15 +3,16 @@ pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {MockUSDe} from "../src/MockUSDe.sol";
-import {ClaimUSDe} from "../src/ClaimUSDe.sol";
+import {LockToken} from "../src/LockToken.sol";
 
 contract MockUSDeTest is Test {
     MockUSDe public mockUSDe;
-    ClaimUSDe public claimUSDe;
+    LockToken public lockToken;
     address public owner;
     address public alice;
     address public rudi;
 
+    event TokenLocked(address indexed user, uint256 amount, uint256 unlockTime);
     event TokenClaimed(address indexed user, uint256 amount);
 
     function setUp() public {
@@ -21,7 +22,7 @@ contract MockUSDeTest is Test {
 
         vm.startPrank(owner);
         mockUSDe = new MockUSDe();
-        claimUSDe = new ClaimUSDe(address(mockUSDe));
+        lockToken = new LockToken(address(mockUSDe));
         vm.stopPrank();
     }
 
@@ -30,7 +31,7 @@ contract MockUSDeTest is Test {
     }
 
     function test_Mint() public {
-        uint256 mintAmount = 1000 * 10**18;
+        uint256 mintAmount = 1000 * 10 ** 18;
 
         vm.prank(owner);
         mockUSDe.mint(alice, mintAmount);
@@ -38,16 +39,21 @@ contract MockUSDeTest is Test {
     }
 
     function test_MintOnlyOwner() public {
-        uint256 mintAmount = 1000 * 10**18;
+        uint256 mintAmount = 1000 * 10 ** 18;
 
-        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", alice));
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "OwnableUnauthorizedAccount(address)",
+                alice
+            )
+        );
         vm.prank(alice);
         mockUSDe.mint(rudi, mintAmount);
     }
 
     function test_MintExceedsMaxSupply() public {
         uint256 overMaxSupply = 2e40;
-        
+
         vm.prank(owner);
         vm.expectRevert("Max supply exceeded");
         mockUSDe.mint(alice, overMaxSupply);
@@ -59,125 +65,70 @@ contract MockUSDeTest is Test {
         assertEq(mockUSDe.owner(), alice);
 
         vm.prank(alice);
-        mockUSDe.mint(rudi, 1000 * 10**18);
-        assertEq(mockUSDe.balanceOf(rudi), 1000 * 10**18);
+        mockUSDe.mint(rudi, 1000 * 10 ** 18);
+        assertEq(mockUSDe.balanceOf(rudi), 1000 * 10 ** 18);
     }
 
     function test_RenounceOwnership() public {
         vm.prank(owner);
         mockUSDe.renounceOwnership();
-        
+
         assertEq(mockUSDe.owner(), address(0));
 
-        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", owner));
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "OwnableUnauthorizedAccount(address)",
+                owner
+            )
+        );
         vm.prank(owner);
-        mockUSDe.mint(alice, 1000 * 10**18);
+        mockUSDe.mint(alice, 1000 * 10 ** 18);
     }
 
-    function test_ClaimUSDe() public {
+    function test_LockToken() public {
+        uint256 lockAmount = 1000 * 10 ** 18;
+
+        vm.prank(owner);
+        mockUSDe.mint(alice, lockAmount);
+
+        assertEq(mockUSDe.balanceOf(alice), lockAmount);
+
         vm.prank(alice);
-        mockUSDe.claimUSDe();
-        
-        assertEq(mockUSDe.balanceOf(alice), mockUSDe.CLAIM_AMOUNT());
-        assertTrue(mockUSDe.hasClaimed(alice));
-    }
+        mockUSDe.approve(address(lockToken), lockAmount);
 
-    function test_ClaimUSDe_AlreadyClaimed() public {
-        vm.startPrank(alice);
-        mockUSDe.claimUSDe();
-        
-        vm.expectRevert("Already claimed");
-        mockUSDe.claimUSDe();
-        vm.stopPrank();
-    }
-
-    function test_ClaimTokens() public {
-        uint256 initialBalance = 1000 * 10**18;
-        uint256 expectedClaim = (initialBalance * 13) / 100;
-
-        vm.startPrank(owner);
-        mockUSDe.mint(alice, initialBalance);
-        mockUSDe.mint(address(claimUSDe), initialBalance * 2);
-        vm.stopPrank();
-
-        vm.startPrank(alice);
-        mockUSDe.approve(address(claimUSDe), type(uint256).max);
-        
-        uint256 beforeBalance = mockUSDe.balanceOf(alice);
-        
-        vm.expectEmit(true, false, false, true);
-        emit TokenClaimed(alice, expectedClaim);
-        
-        claimUSDe.ClaimTokens();
-        
-        uint256 afterBalance = mockUSDe.balanceOf(alice);
-        assertEq(afterBalance - beforeBalance, expectedClaim);
-        assertTrue(claimUSDe.hasClaimed(alice));
-        vm.stopPrank();
-    }
-
-    function test_ClaimTokens_NoBalance() public {
         vm.prank(alice);
-        vm.expectRevert("No tokens to claim");
-        claimUSDe.ClaimTokens();
+        lockToken.lock(lockAmount);
+
+        (uint256 amount, uint256 unlockTime, bool claimed) = lockToken
+            .lockedTokens(alice);
+
+        assertEq(amount, lockAmount);
+        assertEq(claimed, false);
+        assert(unlockTime > block.timestamp);
     }
 
-    function test_ClaimTokens_AlreadyClaimed() public {
-        uint256 initialBalance = 1000 * 10**18;
-
-        vm.startPrank(owner);
-        mockUSDe.mint(alice, initialBalance);
-        mockUSDe.mint(address(claimUSDe), initialBalance * 2);
-        vm.stopPrank();
-
-        vm.startPrank(alice);
-        mockUSDe.approve(address(claimUSDe), type(uint256).max);
-        claimUSDe.ClaimTokens();
-
-        vm.expectRevert("Already claimed");
-        claimUSDe.ClaimTokens();
-        vm.stopPrank();
-    }
-
-    function test_ClaimTokens_InsufficientContractBalance() public {
-        uint256 initialBalance = 1000 * 10**18;
+    function test_ClaimRewardAfterUnlock() public {
+        uint256 lockAmount = 1000 * 10 ** 18;
+        uint256 expectedReward = (lockAmount * 13) / 100;
 
         vm.prank(owner);
-        mockUSDe.mint(alice, initialBalance);
+        mockUSDe.mint(alice, lockAmount);
+        vm.prank(alice);
+        mockUSDe.approve(address(lockToken), lockAmount);
 
-        vm.startPrank(alice);
-        mockUSDe.approve(address(claimUSDe), type(uint256).max);
+        vm.prank(alice);
+        lockToken.lock(lockAmount);
 
-        vm.expectRevert("Insufficient contract balance");
-        claimUSDe.ClaimTokens();
-        vm.stopPrank();
-    }
+        vm.warp(block.timestamp + 1 weeks);
 
-    function test_GetClaimableAmount() public {
-        uint256 initialBalance = 1000 * 10**18;
-        
-        vm.prank(owner);
-        mockUSDe.mint(alice, initialBalance);
+        vm.prank(alice);
+        vm.expectEmit(true, true, false, true);
+        emit TokenClaimed(alice, expectedReward);
+        lockToken.claimReward();
 
-        uint256 expectedClaimable = (initialBalance * 13) / 100;
-        uint256 claimable = claimUSDe.getClaimableAmount(alice);
-        assertEq(claimable, expectedClaimable);
-    }
+        assertEq(mockUSDe.balanceOf(alice), expectedReward);
 
-    function test_GetClaimableAmount_AfterClaim() public {
-        uint256 initialBalance = 1000 * 10**18;
-
-        vm.startPrank(owner);
-        mockUSDe.mint(alice, initialBalance);
-        mockUSDe.mint(address(claimUSDe), initialBalance * 2);
-        vm.stopPrank();
-
-        vm.startPrank(alice);
-        mockUSDe.approve(address(claimUSDe), type(uint256).max);
-        claimUSDe.ClaimTokens();
-        vm.stopPrank();
-
-        uint256 claimable = claimUSDe.getClaimableAmount(alice);
-        assertEq(claimable, 0);
+        (, , bool claimed) = lockToken.lockedTokens(alice);
+        assertEq(claimed, true);
     }
 }
