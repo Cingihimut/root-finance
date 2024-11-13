@@ -6,7 +6,7 @@ export default function About() {
     <>
       <div className="h-[400px]  bg-gray-500">
         <div className="flex flex-col gap-4 justify-center items-center w-full h-full px-3 md:px-0">
-            <img src="#" alt="logo cok dancok" />
+            <img src="#" alt="logo dancok" />
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold ">
             Redeem
           </h1>
