@@ -28,7 +28,7 @@ const NavItems = ({ sidebarView = false }) => (
         <li className="py-4" key={index}>
           <Link
             href={item.path}
-            className="text-sm h-9 py-2 px-4 rounded-md hover:bg-emerald-400/15"
+            className="text-sm h-9 py-2 px-4 rounded-md hover:bg-primary/15"
           >
             {item.name}
           </Link>
