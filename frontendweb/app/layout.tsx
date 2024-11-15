@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "next-themes";
+import BgGradient from "@/components/bg-gradient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-background`}>
+      <body className={`${inter.className} w-full`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -27,6 +28,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
+          <BgGradient />
           {children}
         </ThemeProvider>
       </body>

@@ -3,7 +3,7 @@ import React from "react";
 function Hero() {
   return (
     <section>
-      <div className="max-w-6xl mx-auto h-[calc(100dvh-80.7px)] py-12 px-4 md:px-5 lg:px-6 flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-6 lg:gap-12">
+      <div className="max-w-6xl mx-auto h-[calc(100dvh-80.4px)] py-12 px-4 md:px-5 lg:px-6 flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-6 lg:gap-12">
         <div className="lg:w-3/5 text-center lg:text-left">
           <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-bold">
             Earn More with{" "}
@@ -14,7 +14,7 @@ function Hero() {
           </h1>
           <p className="text-secondary-foreground lg:text-lg">
             Root Finance offers a hands-off, high-yield investment solution
-            powered by Ethena's stable 13% APY and diversified strategies,
+            powered by Ethena&apos;s stable 13% APY and diversified strategies,
             perfect for beginners seeking reliable growth.
           </p>
         </div>
@@ -22,7 +22,6 @@ function Hero() {
           <div className="aspect-square">
             <svg
               width="100%"
-              height="auto"
               viewBox="0 0 503 494"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
