@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/bar/Navbar";
 import { ThemeProvider } from "next-themes";
 import BgGradient from "@/components/bg-gradient";
 
