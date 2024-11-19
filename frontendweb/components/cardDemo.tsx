@@ -55,7 +55,7 @@ export default function CardDemo({ className, ...props }: CardProps) {
         </CardDescription>
       </CardContent>
       <CardFooter>
-        <Button className="w-full text-xl p-8">Connact Wallet</Button>
+        <Button className="w-full text-xl p-8">Connact Wallet </Button>
       </CardFooter>
     </Card>
   );

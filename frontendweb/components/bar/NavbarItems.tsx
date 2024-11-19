@@ -18,7 +18,7 @@ export const items = [
     { name: "Get USDe", path: "/get-usde" },
     { name: "Liquidity", path: "/get-usde" },
     { name: "Defi Vault", path: "/get-usde" },
-    { name: "Portofolio", path: "/get-usde" },
+    { name: "Portofolio", path: "/portofolio" },
   ],
   [{ name: "Claim APY", path: "/claim" }],
 ];
