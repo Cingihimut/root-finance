@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ModeToggle } from "../mode-toggle";
-import ButtonConnect from "../button-connect";
+import { ThemeToggle } from "./ThemeToggle";
+import ButtonConnectWallet from "../ButtonConnectWallet";
 import DrawerBar from "./DrawerBar";
 import NavbarItems from "./NavbarItems";
 
@@ -19,7 +19,7 @@ function Navbar() {
         {/* LEFT */}
         <div className="flex items-center gap-4">
           <Link href="/" className="text-2xl font-bold">
-            ///
+            {"///"}
           </Link>
           <div className="hidden lg:flex gap-2">
             <NavbarItems style={style} itemsIndex={0} />
@@ -31,10 +31,10 @@ function Navbar() {
         <div className="flex gap-2">
           {/* SIDEBAR */}
           <div className="hidden lg:block">
-            <ModeToggle />
+            <ThemeToggle />
           </div>
 
-          <ButtonConnect />
+          <ButtonConnectWallet />
           <DrawerBar />
         </div>
       </div>

@@ -6,11 +6,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Menu, ChevronDown, Sun, Moon } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Menu, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavbarItems from "./NavbarItems";
+import { ThemeToggle } from "./ThemeToggle";
 
 const style = {
   ul: "flex flex-col gap-4",
@@ -23,7 +22,6 @@ const style = {
 };
 
 function DrawerBar() {
-  const { theme, setTheme } = useTheme();
   const drawer = style.drawer;
 
   return (
@@ -55,22 +53,7 @@ function DrawerBar() {
             </details>
           </div>
           <DrawerFooter className="mx-2 self-end">
-            <ToggleGroup
-              variant={"default"}
-              type="single"
-              className="bg-secondary border-border rounded-lg p-1 w-fit"
-              value={theme}
-              onValueChange={(value) => {
-                if (value) setTheme(value);
-              }}
-            >
-              <ToggleGroupItem value="light" className="">
-                <Sun />
-              </ToggleGroupItem>
-              <ToggleGroupItem value="dark" className="">
-                <Moon />
-              </ToggleGroupItem>
-            </ToggleGroup>
+            <ThemeToggle />
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
