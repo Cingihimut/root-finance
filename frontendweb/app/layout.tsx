@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/bar/Navbar";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/components/theme-provider";
 import BgGradient from "@/components/bg-gradient";
+import WagmiWrapper from "@/app/WagmiWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,9 +28,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <BgGradient />
-          {children}
+          <WagmiWrapper>
+            <Navbar />
+            <BgGradient />
+            {children}
+          </WagmiWrapper>
         </ThemeProvider>
       </body>
     </html>
