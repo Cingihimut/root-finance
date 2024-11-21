@@ -1,7 +1,9 @@
-import { Clock4, Check } from "lucide-react";
+"use client";
 
+
+import { Clock4, Check } from "lucide-react";
+import ButtonClaim from "./ButtonClaim";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -50,12 +52,12 @@ export default function CardDemo({ className, ...props }: CardProps) {
         <h1 className=" text-xs">Your claim</h1>
         <CardDescription className=" grid justify-items-center border ">
           <span className="p-10 flex flex-wrap ">
-            Your have withdrawal Request
+            Your have no withdrawal Request
           </span>
         </CardDescription>
       </CardContent>
-      <CardFooter>
-        <Button className="w-full text-xl p-8">Connact Wallet </Button>
+      <CardFooter className="flex justify-center items-center ">
+      <ButtonClaim />
       </CardFooter>
     </Card>
   );

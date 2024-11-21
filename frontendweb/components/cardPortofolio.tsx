@@ -26,15 +26,47 @@ export default function cardPortofolio({ className, ...props }: CardProps) {
         </CardContent>
       </CardHeader>
       <CardContent className="grid gap-2 pt-0 w-full">
-        {Array.from({ length: 8 }, (_, index) => (
-          <CardDescription
-            key={index}
-            className="text-slate-500 flex justify-between border"
-          >
-            <h1 className="p-2">{`coin ${index + 1}`}</h1>
+        
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
+            <p className="p-2">40%</p>
+          </CardDescription>
+
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
+            <p className="p-2">30%</p>
+          </CardDescription>
+
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
+            <p className="p-2">20%</p>
+          </CardDescription>
+
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
             <p className="p-2">10%</p>
           </CardDescription>
-        ))}
+
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
+            <p className="p-2">+</p>
+          </CardDescription>
+
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
+            <p className="p-2">+</p>
+          </CardDescription>
+
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
+            <p className="p-2">+</p>
+          </CardDescription>
+
+          <CardDescription className="flex justify-between border">
+            <h1 className="p-2">coin</h1>
+            <p className="p-2">+</p>
+          </CardDescription>
+        
       </CardContent>
     </Card>
   </div>
