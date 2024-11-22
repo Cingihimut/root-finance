@@ -1,10 +1,14 @@
+import SwapCard from "@/components/card/SwapCard";
+import LayoutWrapper from "@/components/wrapper/LayoutWrapper";
 import React from "react";
 
 function page() {
   return (
-    <div>
-      <h1>GET USDe</h1>
-    </div>
+    <section>
+      <LayoutWrapper>
+        <SwapCard />
+      </LayoutWrapper>
+    </section>
   );
 }
 
