@@ -15,7 +15,7 @@ type CardProps = React.ComponentProps<typeof Card>;
 export default function cardPortofolio({ className, ...props }: CardProps) {
   return (
 <>
-<div className="pt-6 sm:flex sm:pt-10 lg:pt-16 ">
+<div className="pt-6 sm:flex sm:pt-10 lg:pt-16 sm:m-10">
   
   <div className="px-2 py-4 sm:size-3/5 ">
     <Card className={cn(" ", className)} {...props}>
