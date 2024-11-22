@@ -81,7 +81,7 @@ const SwapInput = ({
   onCoinChange: (value: string) => void;
   onAmountChange: (value: string) => void;
 }) => (
-  <div className="bg-background border border-border p-4 rounded-lg">
+  <div className="bg-card border border-border p-4 rounded-lg">
     <div className="flex justify-between gap-2">
       <Input
         type="number"
