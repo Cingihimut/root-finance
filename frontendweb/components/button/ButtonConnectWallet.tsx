@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Image from "next/image";
 
 function ButtonConnectWallet() {
@@ -25,6 +25,7 @@ function ButtonConnectWallet() {
 
         return (
           <div
+            className="w-full"
             {...(!ready && {
               "aria-hidden": true,
               style: {
@@ -40,7 +41,7 @@ function ButtonConnectWallet() {
                   <Button
                     onClick={openConnectModal}
                     type="button"
-                    className="font"
+                    className="font w-full"
                   >
                     Connect
                   </Button>
@@ -49,7 +50,11 @@ function ButtonConnectWallet() {
 
               if (chain.unsupported) {
                 return (
-                  <Button onClick={openChainModal} type="button">
+                  <Button
+                    onClick={openChainModal}
+                    type="button"
+                    className="w-full"
+                  >
                     Wrong network
                   </Button>
                 );

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
-import ButtonConnectWallet from "../ButtonConnectWallet";
+import ButtonConnectWallet from "../button/ButtonConnectWallet";
 import DrawerBar from "./DrawerBar";
 import NavbarItems from "./NavbarItems";
 
