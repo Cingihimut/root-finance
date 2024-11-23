@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import ButtonSwap from "../button/ButtonSwap";
 
 type Coin = {
   name: string;
@@ -167,8 +168,8 @@ function SwapCard() {
           onAmountChange={(amount) => updateSwapState("to", { amount })}
         />
       </CardContent>
-      <CardFooter>
-        <Button className="w-full">BELOM JADI MAS</Button>
+      <CardFooter className="w-full flex flex-col justify-center">
+        <ButtonSwap />
       </CardFooter>
     </Card>
   );
